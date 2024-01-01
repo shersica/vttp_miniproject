@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/animesearch.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <a th:href="@{/}" class="logo">AniList</a>
+        <div class="auth-buttons">
+            <!-- Check if user is logged in -->
+            <div th:if="${username == null}">
+                <a th:href="@{/account/login}" class="btn btn-primary">Login</a>
+                <a th:href="@{/account/register}" class="btn btn-secondary">Sign Up</a>
+            </div>
+            <!-- If user is logged in, display a profile button -->
+            <div th:if="${username != null}">
+                <a th:href="@{/watchlist}" class="btn btn-success">Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="container">
+        <h4>Search Results:</h4>
+    
+        <div class="row">
+            <div class="col-md-2" th:each="anime : ${animeList}">
+                <div class="card">
+                    <a th:href="@{/anime/{id}(id=${anime.id})}" class="card-link">
+                    <img th:src="${anime.imageLink}" class="card-img-top card-img" alt="Anime Image">
+                    <div class="card-body">
+                        <h5 class="card-title text-center" th:text="${anime.title}"></h5>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</body>
+</html>
