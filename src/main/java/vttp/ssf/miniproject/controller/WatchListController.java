@@ -1,12 +1,13 @@
 package vttp.ssf.miniproject.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpSession;
 import vttp.ssf.miniproject.model.AnimeDetails;
+import vttp.ssf.miniproject.model.AnimeWatchList;
+import vttp.ssf.miniproject.model.WatchlistDetails;
 import vttp.ssf.miniproject.service.AnimeService;
 import vttp.ssf.miniproject.service.WatchListService;
 
@@ -41,28 +44,59 @@ public class WatchListController {
         String username = (String) session.getAttribute("username");
         System.out.println("Current user:" + username);
 
-        //Check if user has watchlist
-        List<AnimeDetails> watchList = new ArrayList<>();
-        // if(!watchListSvc.hasWatchList(username)){
-        //     watchList = new ArrayList<>();
-        //     System.out.println("User has no watchlist");
-        //     //how come doesnt show the test part
-        //     mav.setViewName("watchlist");
-        //     return mav;
+        // List<AnimeDetails> watchList = new ArrayList<>();
+        List<AnimeWatchList> watchList = watchListSvc.getWatchList(username);
+
+        // List<String> animeIdList = watchListSvc.getWatchList(username);
+        // for(String id : animeIdList){
+        //     AnimeDetails animeDetails = animeSvc.getAnimeDetails(Integer.valueOf(id));
+            
+        //     //to prevent rate limit (3 request per second) 
+        //     try {
+        //         Thread.sleep(500);
+        //     } catch (InterruptedException e) {
+        //         // e.printStackTrace();
+        //     }
         // }
-        
-        List<String> animeIdList = watchListSvc.getWatchList(username);
-        for(String id : animeIdList){
-            AnimeDetails animeDetails = animeSvc.getAnimeDetails(Integer.valueOf(id));
-            watchList.add(animeDetails);
-        }
-        // System.out.println(username + "'s watchlist:" + watchList);
 
         mav.addObject("watchList", watchList);
         mav.addObject("username", username);
+        // mav.addObject("watchListTest", watchListTest);
         mav.setViewName("watchlist");
 
         return mav;
+    }
+
+    @GetMapping("/update/{id}")
+    public ModelAndView updateWatchList(@PathVariable("id") int id, HttpSession session){
+        ModelAndView mav = new ModelAndView("updatewatchlist");
+        String username = (String) session.getAttribute("username");
+        AnimeWatchList animeWL = new AnimeWatchList();
+        animeWL = watchListSvc.getAnimeFromWatchList(username, String.valueOf(id));
+        WatchlistDetails watchlistDetails = new WatchlistDetails();
+
+        mav.addObject("animeWL", animeWL);
+        mav.addObject("watchlistDetails", watchlistDetails);
+        mav.addObject("username", username);
+
+        return mav;
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateWatchList(@PathVariable("id") int id,@ModelAttribute WatchlistDetails watchlistDetails, Model model, HttpSession session){
+        String username = (String) session.getAttribute("username");
+        System.out.println(watchlistDetails);
+
+        AnimeWatchList anime = watchListSvc.getAnimeFromWatchList(username, String.valueOf(id));
+        anime.setEpProgress(watchlistDetails.getEpProgress());
+        anime.setNotes(watchlistDetails.getNotes());
+        anime.setUserScore(watchlistDetails.getUserScore());
+        anime.setWatchStatus(watchlistDetails.getWatchStatus());
+        System.out.println(anime);
+
+        watchListSvc.addToWatchList(username, anime);
+        
+        return "redirect:/watchlist";
     }
 
     @PostMapping("/add")
@@ -74,26 +108,28 @@ public class WatchListController {
 
         String username = (String) session.getAttribute("username");
 
-        //Check if user has watchlist
-        //NEED TO DEAL WITH NULL Watchlist
-        // if(!watchListSvc.hasWatchList(username)){
-        //     watchListSvc.createWatchList(username);
-        //     System.out.println("User has no watchlist, created new one");
-        // }
+        // watchListSvc.addToWatchList(username, animeDetails);
 
-        watchListSvc.addToWatchList(username, animeDetails);
+        AnimeWatchList animeWL = new AnimeWatchList();
+        animeWL.setId(animeDetails.getId());
+        animeWL.setImageLink(animeDetails.getImageLink());
+        animeWL.setScore(animeDetails.getScore());
+        animeWL.setEpisodes(animeDetails.getEpisodes());
+        animeWL.setStatus(animeDetails.getStatus());
+        animeWL.setTitle(animeDetails.getTitle());
+        watchListSvc.addToWatchList(username, animeWL);
 
         //if possible popup notif to show it gt added, stay same page
         System.out.println(animeDetails.getTitle() + " with id of " + animeDetails.getId() + " added to watchlist");
         return "redirect:/watchlist";
     }
 
-    //delete
     @PostMapping("/delete")
-    public String removeFromWatchList(@RequestParam String animeId, HttpSession session){
+    public String deleteFromWatchList(@RequestParam String animeId, HttpSession session){
 
         String username = (String) session.getAttribute("username");
-        watchListSvc.removeFromWatchList(username, animeId);
+        // watchListSvc.removeFromWatchList(username, animeId);
+        watchListSvc.deleteFromWatchList(username, animeId);
         return "redirect:/watchlist";
     }
     

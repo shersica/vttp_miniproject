@@ -7,6 +7,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
@@ -51,6 +52,35 @@ public class AppConfig {
         template.setValueSerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashValueSerializer(new StringRedisSerializer());
+
+        return template;
+ 
+    }
+
+    @Bean("redisObject")
+	public RedisTemplate<String, Object> redisObjectTemplateFactory() {
+	
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName(redisHost);
+        config.setPort(redisPort);
+        config.setDatabase(redisDatabase);
+
+        if(redisUsername.trim().length() > 0){
+            config.setUsername(redisUsername);
+            config.setPassword(redisPassword);
+        }
+
+        JedisClientConfiguration jedisClient = JedisClientConfiguration.builder().build();
+        JedisConnectionFactory jedisFac = new JedisConnectionFactory(config, jedisClient);
+        jedisFac.afterPropertiesSet();
+
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(jedisFac);
+
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
 
         return template;
  

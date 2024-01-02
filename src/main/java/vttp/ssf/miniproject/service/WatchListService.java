@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import vttp.ssf.miniproject.model.AnimeDetails;
+import vttp.ssf.miniproject.model.AnimeWatchList;
 import vttp.ssf.miniproject.repo.WatchListRepo;
 
 @Service
@@ -14,55 +15,37 @@ public class WatchListService {
 
     @Autowired
     WatchListRepo watchListRepo;
-    
 
-    // public void addToWatchList(String username, AnimeDetails animeDetails){
-        // List<AnimeDetails> watchList = watchListRepo.getWatchList(username);
-        
-        // if(watchList == null){
-        //     watchList = new ArrayList<>();
-        // }
-        // watchList.add(animeDetails);
-        // watchListRepo.addToWatchList(username, watchList);
-        // watchListRepo.addToWatchList(username, animeDetails);
-    // }
-
-    // public List<AnimeDetails> getWatchList(String username){
-    //     return watchListRepo.getWatchList(username);
-
-    // }
-
-    // public void delete(String username, AnimeDetails animeDetails){
-    //     List<AnimeDetails> watchList = watchListRepo.getWatchList(username);
-
-    //     if(watchList != null){
-    //         watchList.remove(animeDetails);
-    //         watchListRepo.addToWatchList(username, watchList);
-    //     }
-    // }
-
-    // public boolean hasWatchList(String username){
-    //     return watchListRepo.hasWatchList(username);
-    // }
-
-    // public void createWatchList(String username){
-    //     watchListRepo.addWatchList(username, new ArrayList<>());
-    // }
-
-    //--------------------------------------------------------------------------//
-    public void addToWatchList(String username, AnimeDetails animeDetails){
-        String animeId = String.valueOf(animeDetails.getId());
-        watchListRepo.addToWatchList(username, animeId);
+    public void addToWatchList(String username, AnimeWatchList animeWL){
+        watchListRepo.addToWatchList(username, animeWL);
     }
 
-    public List<String> getWatchList(String username){
+    public List<AnimeWatchList> getWatchList(String username){
         return watchListRepo.getWatchList(username);
     }
 
-    public void removeFromWatchList(String username, String animeId) {
-        // String animeId = String.valueOf(animeDetails.getId());
-        watchListRepo.removeFromWatchList(username, animeId);
+    public void deleteFromWatchList(String username, String animeId){
+        watchListRepo.deleteFromWatchList(username, animeId);
     }
+
+    public AnimeWatchList getAnimeFromWatchList(String username, String animeId){
+        return watchListRepo.getAnimeFromWatchList(username, animeId);
+    }
+
+    //--------------------------------------------------------------------------//
+    // public void addToWatchList(String username, AnimeDetails animeDetails){
+    //     String animeId = String.valueOf(animeDetails.getId());
+    //     watchListRepo.addToWatchList(username, animeId);
+    // }
+
+    // public List<String> getWatchList(String username){
+    //     return watchListRepo.getWatchList(username);
+    // }
+
+    // public void removeFromWatchList(String username, String animeId) {
+    //     // String animeId = String.valueOf(animeDetails.getId());
+    //     watchListRepo.removeFromWatchList(username, animeId);
+    // }
 
 
 

@@ -10,7 +10,7 @@
 <body>
     <!-- Header -->
     <div class="header">
-        <a th:href="@{/}" class="logo">AniList</a>
+        <a th:href="@{/}" class="logo"><img class="text-center" src="/css/fox.png" width="25" height="25"> AniList </a>
         <div class="auth-buttons">
             <!-- Check if user is logged in -->
             <div th:if="${username == null}">
@@ -19,41 +19,45 @@
             </div>
             <!-- If user is logged in, display a profile button -->
             <div th:if="${username != null}">
-                <a th:href="@{/watchlist}" class="btn btn-success">Profile</a>
+                <a th:href="@{/watchlist}" class="btn btn-secondary">Profile</a>
             </div>
         </div>
     </div>   
     
-    <br>
-    <div class="container">
-        <div class="card text-center card-form mx-auto">
-            <div class="form container">
-                <br><br>
-                <h1>Register</h1>
-                <br>
-                <form method="POST" th:action="@{/account/register}" th:object="${registerUser}">
-                    <div class="mb-3">
-                        <input type="text" class="form-control" name="username" th:field="*{username}" placeholder="Username">
-                    </div>
-                    <div class="alert alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>                
-    
-                    <div class="mb-3">
-                        <input type="password" class="form-control" name="password" th:field="*{password}" placeholder="Password" >
-                    </div>
-                    <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-    
-    
-                    <div class="mb-3">
-                        <input type="password" class="form-control" name="password2" th:field="*{password2}" placeholder="Re-Enter Password" >
-                    </div>
-                    <div class="alert alert-danger" th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}"></div>
-    
-                    <button type="submit" class="btn btn-primary">Create Account</button>
-                    <br><br>
-                    <p>Already have an account? <a th:href="@{/account/login}">Login</a></p>
+    <div class="animebg">
+        <div class="container">
+            <div class="card text-center card-form mx-auto">
+                <div class="form container">
+                    <h1>Register</h1>
+                    <br>
+                    <form method="POST" th:action="@{/account/register}" th:object="${registerUser}">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="username" th:field="*{username}" placeholder="Username">
+                        </div>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>                
+        
+                        <div class="mb-3">
+                            <input type="password" class="form-control" name="password" th:field="*{password}" placeholder="Password" >
+                        </div>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        
+        
+                        <div class="mb-3">
+                            <input type="password" class="form-control" name="password2" th:field="*{password2}" placeholder="Re-Enter Password" >
+                        </div>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}"></div>
+        
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                        <br><br>
+                        <p>Already have an account? <a th:href="@{/account/login}">Login</a></p>
+                </div>
             </div>
+    
         </div>
-
     </div>
+    <div class="footer">
+        <!-- <p class="text-center footer-text">AniList 2023</p> -->
+    </div>
+
 </body>
 </html>

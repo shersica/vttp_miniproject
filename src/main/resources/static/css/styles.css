@@ -1,29 +1,31 @@
-/* Add this style to remove the underline and set the color */
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+
+
 .clickable-title {
     text-decoration: none;
     color: black;
 }
 
-/* Add this style for a different color when the link is hovered */
 .clickable-title:hover {
-    color: blue; /* You can change this color as needed */
+    color: blue; 
 }
 
-/* Add your custom styles here */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 20px 100px;
     padding-left: 70px;
-    background-color: rgb(31,35,45); /* Add your desired background color */
+    padding-right: 70px;
+    background-color: rgb(31,35,45); 
 }
 
 .logo {
     font-size: 24px;
     font-weight: bold;
     text-decoration: none;
-    color: whitesmoke; /* Add your desired text color */
+    color: whitesmoke; 
+    vertical-align: middle;
 }
 
 .auth-buttons {
@@ -31,33 +33,34 @@
     gap: 10px;
 }
 
-/* .hero-image {
-    background: url(animebackground.avif) no-repeat center;
-    background-size: cover;
-    height: 500px;
-} */
+.logo img {
+    vertical-align: middle;
+    padding-bottom: 5px;
+}
+
+
 
 body {
     background-color: rgb(237, 241, 245);
-    /* background: url(animebackground.avif) no-repeat;
-    background-size: cover; */
+    font-family: 'Muli', sans-serif;
+
+  
 }
 
 .card {
     border-radius: 8px;
     margin-bottom: 20px;
-    /* background-color: black; */
 }
 
 .card-img-top {
     object-fit: fill;
     width: 100%;
-    height: 250px; /* Set a fixed height for the image */
+    height: 250px; 
     border-radius: 8px;
 }
 
 .card-body {
-    height: 75px; /* Set a fixed height for the card body */
+    height: 75px; 
 }
 
 .card-title {
@@ -74,8 +77,9 @@ body {
 
 .card-form {
     width: 600px;
-    height: 600px;
+    height: 700px;
     padding: 40px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
 }
 
 .container {
@@ -94,17 +98,69 @@ body {
 }
 
 .head-text {
-    /* color: antiquewhite; */
-
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+    backdrop-filter: blur(10px); 
+    margin-left: 500px;
+    margin-right: 500px;
+    border-radius: 8px;
+    padding-top: 10px;
+    padding-bottom: 20px;
 }
 
 .animebg {
-    background: url(light.jpg);
+    /* background: url(light.jpg);
     background-size: cover;
-    height: 800px;
+    height: 800px; */
+    background-image: url('light.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    height: 100vh; 
+    margin: 0; 
 }
 
 .table-title{
     color: black;
     text-decoration: none;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 100px;
+    padding-left: 70px;
+    padding-right: 70px;
+    background-color: rgb(31,35,45); 
+    text-align: center;
+}
+
+.footer-text {
+    color: whitesmoke;
+}
+
+.anime-title{
+    font-weight: bold;
+}
+
+.btn-trash {
+    border: none;
+    background-color: transparent; 
+    color: red;
+}
+
+.btn-trash:focus {
+    outline: none; 
+}
+
+td {
+    text-align: justify;
+    vertical-align: auto;
+}
+
+.fa-star{
+    color: goldenrod;
 }

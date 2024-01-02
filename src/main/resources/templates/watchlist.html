@@ -6,12 +6,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.25.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <title>Document</title>
+    <script src="https://kit.fontawesome.com/74eddf0327.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">    <title>Document</title>
+    
 </head>
 <body>
     <!-- Header -->
     <div class="header">
-        <a th:href="@{/}" class="logo">AniList</a>
+        <a th:href="@{/}" class="logo"><img class="text-center" src="/css/fox.png" width="25" height="25"> AniList </a>
         <div class="auth-buttons">
             <!-- Check if user is logged in -->
             <div th:if="${username == null}">
@@ -20,7 +22,7 @@
             </div>
             <!-- If user is logged in, display a profile button -->
             <div th:if="${username != null}">
-                <a th:href="@{/watchlist}" class="btn btn-success">Profile</a>
+                <a th:href="@{/watchlist}" class="btn btn-secondary">Profile</a>
             </div>
         </div>
     </div>
@@ -34,36 +36,50 @@
                 <tr>
                     <th></th>
                     <th>Title</th>
-                    <th>Episodes</th>
-                    <th>Score</th>
+                    <th>Episode Progress</th>
+                    <th>Your Score</th>
                     <th>Status</th>
+                    <th>Watch Status</th>
+                    <th>Notes</th>
                     <th>Action</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr data-th-each="anime : ${watchList}">
-                    <td><img th:src="*{anime.imageLink}" alt="" width="30" height="35"></td>
+                    <td><img th:src="*{anime.imageLink}" alt="" width="50" height="60"></td>
                     <td><a class="table-title" th:href="@{/anime/{id}(id=${anime.id})}" data-th-text="*{anime.title}"></a></td>
-                    <td data-th-text="*{anime.episodes}"></td>
-                    <td data-th-text="*{anime.score}"></td>
+                    <td>
+                        <p th:text="${anime.epProgress} + '/' + ${anime.episodes}"></p>
+                    </td>                    <td data-th-text="*{anime.userScore}"></td>
                     <td data-th-text="*{anime.status}"></td>
+                    <td data-th-text="*{anime.watchStatus}"></td>
+                    <td data-th-text="*{anime.notes}"></td>
+                    <td>
+                        <!-- <a th:href="@{/watchlist/update/{id}(id=${anime.id})}" class="btn btn-secondary">Update</a> -->
+                        <a th:href="@{/watchlist/update/{id}(id=${anime.id})}"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+                    </td>
                     <td>
                         <form th:action="@{/watchlist/delete}" method="post">
                             <input type="hidden" name="animeId" th:value="${anime.id}" />
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn-trash"><i class="fa-regular fa-trash-can"></i></button>
                         </form>
+                        <br>
                     </td>
 
-                    <!-- <td><i class="bi bi-trash"></i></td> -->
                 </tr>
             </tbody>
         </table>
-        <div class="footer">
+        <br><br>
+        <div class="footer-btn">
             <form class="text-center" th:action="@{/account/logout}">
                 <button type="submit" class="btn btn-primary">Logout</button>
             </form>
         </div>
 
+    </div>
+    <div class="footer">
+        <a class="footer-text" th:href="@{/api/watchlist/{user}(user=${username})}"><p>Your WatchList as JSON</p></a>
     </div>
 
 </body>

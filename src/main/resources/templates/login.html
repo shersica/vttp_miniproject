@@ -10,7 +10,7 @@
 <body>
     <!-- Header -->
     <div class="header">
-        <a th:href="@{/}" class="logo">AniList</a>
+        <a th:href="@{/}" class="logo"><img class="text-center" src="/css/fox.png" width="25" height="25"> AniList </a>
         <div class="auth-buttons">
             <!-- Check if user is logged in -->
             <div th:if="${username == null}">
@@ -19,7 +19,7 @@
             </div>
             <!-- If user is logged in, display a profile button -->
             <div th:if="${username != null}">
-                <a th:href="@{/watchlist}" class="btn btn-success">Profile</a>
+                <a th:href="@{/watchlist}" class="btn btn-secondary">Profile</a>
             </div>
         </div>
     </div>   
@@ -46,6 +46,9 @@
                         <button type="submit" class="btn btn-primary">Login</button>
                         <br><br>
                         <p>Not registered? <a th:href="@{/account/register}">Create an account</a></p>
+                </div>
+                <div class="footer">
+                    <!-- <p class="text-center footer-text">AniList 2023</p> -->
                 </div>
             </div>
     

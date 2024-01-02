@@ -58,45 +58,8 @@ public class AnimeService {
                 })
                 .toList();
 
-        // for(JsonValue anime : animeArray){
-        //     JsonObject animeObject = anime.asJsonObject();
-
-        //     int id = animeObject.getInt("mal_id");
-        //     String imageLink = animeObject.getJsonObject("images").getJsonObject("jpg").getString("image_url");
-        //     String title = animeObject.getString("title");
-        //     // Double score = anime.asJsonObject().getJsonNumber("score").doubleValue();
-        //     Double score = null;
-        //     JsonValue scoreJsonValue = animeObject.get("score");
-        //     if (scoreJsonValue != null && !JsonValue.NULL.equals(scoreJsonValue)) {
-        //         if (scoreJsonValue.getValueType() == JsonValue.ValueType.NUMBER) {
-        //             score = ((JsonNumber) scoreJsonValue).doubleValue();
-        //         }
-        //         else{
-        //             score = 0.0;
-        //         }
-        //     }
-        //     // String synopsis = anime.asJsonObject().getString("synopsis");
-        //     String synopsis = extractSynopsis(animeObject);
-        //     // String synopsis = anime.asJsonObject().getOrDefault("synopsis", JsonValue.NULL).toString().replace("\\n\\n", "\n\n");
-        //     animeSearchList.add(new Anime(id, title, score, synopsis, imageLink));
-        // }
-
         return animeSearchList;
 
-    }
-
-    private String extractSynopsis(JsonObject animeObject) {
-        JsonValue synopsis = animeObject.get("synopsis");
-
-        if (synopsis != null) {
-            if (synopsis.getValueType() == JsonValue.ValueType.STRING) {
-                return ((JsonString) synopsis).getString();
-            } else if (synopsis.getValueType() == JsonValue.ValueType.OBJECT) {
-                JsonObject synopsisObject = (JsonObject) synopsis;
-                return synopsisObject.getString("text", "");
-            }
-        }
-        return "";
     }
 
     public AnimeDetails getAnimeDetails(int id){
@@ -128,10 +91,9 @@ public class AnimeService {
         String status = animeDetails.getString("status", "N/A");
         String season = animeDetails.getString("season", "N/A");
         String background = animeDetails.getString("background", "No background information");
-        //fixed year default value to not show in html if is 0
         int year = animeDetails.getInt("year", 0);
         String trailer = animeDetails.getJsonObject("trailer").getString("embed_url", "");
-        int episodes = animeDetails.getInt("episodes");
+        int episodes = animeDetails.getInt("episodes", 0);
         String type = animeDetails.getString("type", "N/A");
         String source = animeDetails.getString("source", "N/A");
         String duration = animeDetails.getString("duration");

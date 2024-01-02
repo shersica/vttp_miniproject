@@ -2,6 +2,7 @@ package vttp.ssf.miniproject.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import jakarta.json.JsonObjectBuilder;
 import jakarta.servlet.http.HttpSession;
 import vttp.ssf.miniproject.model.Anime;
 import vttp.ssf.miniproject.model.AnimeDetails;
+import vttp.ssf.miniproject.model.AnimeWatchList;
 import vttp.ssf.miniproject.service.AnimeService;
 import vttp.ssf.miniproject.service.WatchListService;
 
@@ -36,10 +38,10 @@ public class AnimeRestController {
     @GetMapping(path = "/watchlist/{user}")
     public ResponseEntity<String> getWatchListAsJson(@PathVariable("user") String user,HttpSession session){
         String username = (String) session.getAttribute("username");
-        List<String> animeIdList = watchListSvc.getWatchList(username);
+        List<AnimeWatchList> animeWatchList = watchListSvc.getWatchList(username);
         List<AnimeDetails> watchList = new ArrayList<>();
-        for(String id : animeIdList){
-            AnimeDetails animeDetails = animeSvc.getAnimeDetails(Integer.valueOf(id));
+        for(AnimeWatchList animeWL : animeWatchList){
+            AnimeDetails animeDetails = animeSvc.getAnimeDetails(Integer.valueOf(animeWL.getId()));
             watchList.add(animeDetails);
         }
 
@@ -49,14 +51,19 @@ public class AnimeRestController {
         JsonObjectBuilder animeBuilder = Json.createObjectBuilder();
         JsonArrayBuilder watchListBuilder = Json.createArrayBuilder();
 
-        for(AnimeDetails anime : watchList){
-            animeBuilder.add("title", anime.getTitle());
-            animeBuilder.add("id", anime.getId());
-            animeBuilder.add("score", anime.getScore());
-            animeBuilder.add("episodes", anime.getEpisodes());
-            animeBuilder.add("imageLink", anime.getImageLink());
-            animeBuilder.add("status", anime.getStatus());
 
+        for(AnimeWatchList animeWL : animeWatchList){
+            animeBuilder.add("title", animeWL.getTitle());
+            animeBuilder.add("id", animeWL.getId());
+            animeBuilder.add("score", animeWL.getScore());
+            animeBuilder.add("episodes", animeWL.getEpisodes());
+            animeBuilder.add("imageLink", animeWL.getImageLink());
+            animeBuilder.add("status", animeWL.getStatus());
+            animeBuilder.add("userScore", Optional.ofNullable(animeWL.getUserScore()).orElse(0.0)); 
+            animeBuilder.add("epProgress", Optional.ofNullable(animeWL.getEpProgress()).orElse(0)); 
+            animeBuilder.add("notes", Optional.ofNullable(animeWL.getNotes()).orElse(""));
+            animeBuilder.add("watchStatus", Optional.ofNullable(animeWL.getWatchStatus()).orElse(""));
+  
             watchListBuilder.add(animeBuilder);
         }
 

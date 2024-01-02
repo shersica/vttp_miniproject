@@ -6,15 +6,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/animedetails.css}">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="https://kit.fontawesome.com/74eddf0327.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
-    <!-- <div class="container-header">
-        <h1 class="logo">AniCharts</h1>
-    </div> -->
 <body>
         <!-- Header -->
         <div class="header">
-            <a th:href="@{/}" class="logo">AniList</a>
+            <a th:href="@{/}" class="logo"><img class="text-center" src="/css/fox.png" width="25" height="25"> AniList </a>
             <div class="auth-buttons">
                 <!-- Check if user is logged in -->
                 <div th:if="${username == null}">
@@ -23,7 +21,7 @@
                 </div>
                 <!-- If user is logged in, display a profile button -->
                 <div th:if="${username != null}">
-                    <a th:href="@{/watchlist}" class="btn btn-success">Profile</a>
+                    <a th:href="@{/watchlist}" class="btn btn-secondary">Profile</a>
                 </div>
             </div>
         </div>
@@ -52,15 +50,24 @@
                         <img th:src="*{imageLink}" alt="" class="img-fluid">
                         <br><br>
                         <button type="submit" class="btn btn-primary">Add to Watch List</button>
+    
                     </div>
                     <br>
                     <div class="anime-information">
                         <p>Type: <span data-th-text="*{type}"></span></p>
-                        <p>Episodes: <span data-th-text="*{episodes}"></span></p>
+                        <div th:unless="*{episodes} != 0">
+                            <p>Episodes: N/A</p>
+                        </div>
+                        <div th:if="*{episodes} != 0">
+                            <p>Episodes: <span data-th-text="*{episodes}"></span></p>
+                        </div>
                         <p>Status: <span data-th-text="*{status}"></span></p>
                         <p>Source: <span data-th-text="*{source}"></span></p>
                         <p>Season: <span data-th-text="*{#strings.capitalize(season)}"></span></p>
                         <p>Aired: <span data-th-text="*{aired}"></span></p>
+                        <div th:unless="*{year} != 0">
+                            <p>Year: N/A</p>
+                        </div>
                         <div th:if="*{year} != 0">
                             <p>Year: <span data-th-text="*{year}"></span></p>
                         </div>
@@ -70,7 +77,12 @@
                 </div>
                 <div class="col-md-8">
                     <h2 data-th-text="*{title}"></h2>
-                    <h4>Score: <span data-th-text="*{score}"></span></h4>
+                    <div th:if="*{score} != 0">
+                        <h4>Score: <span data-th-text="*{score}"></span> <i class="fa-solid fa-star"></i></h4>
+                    </div>
+                    <div th:unless="*{score} != 0">
+                        <h4>Score: N/A</h4>
+                    </div>
                     <br><br>
                     <h6>Synopsis:</h6>
                     <hr>
@@ -82,10 +94,20 @@
                     <br>
                     <h6>Trailer:</h6>
                     <hr>
-                    <iframe th:src="*{trailer + '?autoplay=0'}" frameborder="0"></iframe>
+                    <div th:if="!*{trailer.isEmpty}">
+                        <iframe th:src="*{trailer + '?autoplay=0'}" frameborder="0"></iframe>
+                    </div>
+                    <div th:if="*{trailer.isEmpty}">
+                        <p>Trailer unavailable</p>
+                    </div>
+
                 </div>
             </div>
         </form>
+    </div>
+    <br><br><br>
+    <div class="footer">
+        <!-- <p class="text-center footer-text">AniList 2023</p> -->
     </div>
 </body>
 </html>
