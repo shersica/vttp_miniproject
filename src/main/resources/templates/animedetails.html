@@ -16,7 +16,7 @@
             <div class="auth-buttons">
                 <!-- Check if user is logged in -->
                 <div th:if="${username == null}">
-                    <a th:href="@{/account/login}" class="btn btn-primary">Login</a>
+                    <a th:href="@{/account/login}" class="btn btn-dark">Login</a>
                     <a th:href="@{/account/register}" class="btn btn-secondary">Sign Up</a>
                 </div>
                 <!-- If user is logged in, display a profile button -->
