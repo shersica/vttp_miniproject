@@ -1,6 +1,6 @@
 # Anilist
 
-Anilist is an anime website that allow users to keep track of their favourite animes.
+Anilist is an anime website that allow users to keep track of their favourite animes. Built using Java Springboot and Thymeleaf.
 
 Main Features:
 1. Find out what are the current top animes
